@@ -8,6 +8,8 @@ public class Shop : MonoBehaviour {
 	// Player game object
 	GameObject Player;
 
+	int TotalUpgrades = 0;
+
 	// Total Money
 	int Money = 0;
 	Text MoneyText;
@@ -64,6 +66,8 @@ public class Shop : MonoBehaviour {
 				CDPlus.interactable = false;
 			Player.GetComponent<CharacterShoot>().Cooldown -= 0.05f;
 			CDMinus.interactable = true;
+
+			TotalUpgrades++;
 			AddMoney(-10);
 		}
 		else
@@ -73,6 +77,8 @@ public class Shop : MonoBehaviour {
 				CDMinus.interactable = false;
 			Player.GetComponent<CharacterShoot>().Cooldown += 0.05f;
 			CDPlus.interactable = true;
+
+			TotalUpgrades--;
 			AddMoney(5);
 		}
 	}
