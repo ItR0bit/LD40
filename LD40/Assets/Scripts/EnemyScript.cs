@@ -42,7 +42,7 @@ public class EnemyScript : MonoBehaviour {
 	}
 
 	// Damages the enemy
-	public void DamageEnemy(float value)
+	public virtual void DamageEnemy(float value, List<BulletScript.BulletType> bulletTypes)
 	{
 		Health -= value;
 		if (Health <= 0)
@@ -50,5 +50,11 @@ public class EnemyScript : MonoBehaviour {
 			Destroy(this.gameObject);
 			GameObject.FindGameObjectWithTag("Player").GetComponent<Shop>().AddMoney(10);
 		}
+	}
+
+	// Slows the enemy
+	public virtual void Slow(int amount)
+	{
+		Speed = Speed / (amount+1);
 	}
 }

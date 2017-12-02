@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class BulletScript : MonoBehaviour {
 
+	public enum BulletType
+	{
+		CHARGE,
+		ICE,
+		EXPLOSIVE,
+		HOMING
+	}
+
 	public float Speed = 15f;
 	public float Damage = 20;
 	public float Range = 10f;
+	public int SpecialAmount = 0;
+	public List<BulletType> Bullet = new List<BulletType>();
 	public Vector3 StartPos;
 	Vector3 Direction;
 
@@ -30,12 +40,19 @@ public class BulletScript : MonoBehaviour {
 		transform.position = transform.position + (Direction * Speed * Time.deltaTime);
 	}
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		// Damages enemies that are hit
 		if (collision.transform.tag == "Enemy")
 		{
-			collision.gameObject.GetComponent<EnemyScript>().DamageEnemy(Damage);
-			Destroy(gameObject);
+			collision.gameObject.GetComponent<EnemyScript>().DamageEnemy(Damage, Bullet);
+			if (Bullet.Contains(BulletType.ICE))
+			{
+				collision.gameObject.GetComponent<EnemyScript>().Slow(SpecialAmount);
+			}
+			if (!Bullet.Contains(BulletType.CHARGE))
+				Destroy(gameObject);
+
 		}
 	}
 

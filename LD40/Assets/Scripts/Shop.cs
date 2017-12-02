@@ -59,10 +59,24 @@ public class Shop : MonoBehaviour {
 	public Button MSPlus;
 	public Button MSMinus;
 
+	// Shot Speed stuff
+	public Image IceMask;
+	public Button IcePlus;
+	public Button IceMinus;
+	
+	// Shot Speed stuff
+	public Image CHRGMask;
+	public Button CHRGPlus;
+	public Button CHRGMinus;
+
+	// Enemy Spawner
+	EnemySpawnScript EnemySpawner;
+
 	// Use this for initialization
 	void Start () {
 		Player = GameObject.FindGameObjectWithTag("Player");
 		MoneyText = GameObject.Find("Money").GetComponent<Text>();
+		EnemySpawner = GameObject.Find("EnemySpawn").GetComponent<EnemySpawnScript>();
 	}
 
 	// Adds money
@@ -75,7 +89,8 @@ public class Shop : MonoBehaviour {
 		DPlus.interactable = (Money >= 100 && DMask.fillAmount < 1);
 		SRPlus.interactable = (Money >= 50 && SRMask.fillAmount < 1);
 		SSPlus.interactable = (Money >= 50 && SSMask.fillAmount < 1);
-		MSPlus.interactable = (Money >= 50 && MSMask.fillAmount < 1);
+		MSPlus.interactable = (Money >= 75 && MSMask.fillAmount < 1);
+		IcePlus.interactable = (Money >= 250 && IceMask.fillAmount < 1);
 
 	}
 
@@ -151,10 +166,10 @@ public class Shop : MonoBehaviour {
 						}
 						break;
 					case DebuffType.ENEMYDAMAGE:
-						// TODO
+						EnemySpawner.ChangeDamage(1);
 						break;
 					case DebuffType.ENEMYSPEED:
-						// TODO
+						EnemySpawner.ChangeSpeed(3);
 						break;
 					case DebuffType.MOVEMENTSPEED:
 						if (Player.GetComponent<CharacterMovement>().MovementSpeed == 0)
@@ -197,10 +212,10 @@ public class Shop : MonoBehaviour {
 							Player.GetComponent<CharacterShoot>().BulletScale = 1;
 						break;
 					case DebuffType.ENEMYDAMAGE:
-						// TODO
+						EnemySpawner.ChangeDamage(-1);
 						break;
 					case DebuffType.ENEMYSPEED:
-						// TODO
+						EnemySpawner.ChangeSpeed(-3);
 						break;
 					case DebuffType.MOVEMENTSPEED:
 						Player.GetComponent<CharacterMovement>().MovementSpeed += 10f;
@@ -362,6 +377,62 @@ public class Shop : MonoBehaviour {
 
 			TotalUpgrades--;
 			AddMoney(25);
+		}
+	}
+
+	// Changes ice level of bullet
+	public void ChangeIceShot(bool isIncreasing)
+	{
+		if (isIncreasing)
+		{
+			IceMask.fillAmount += 0.2f;
+			if (IceMask.fillAmount == 1)
+				IcePlus.interactable = false;
+			Player.GetComponent<CharacterShoot>().IceAmount += 1;
+			IceMinus.interactable = true;
+
+			TotalUpgrades++;
+			AddMoney(-250);
+		}
+		else
+		{
+			IceMask.fillAmount -= 0.2f;
+			IceMask.fillAmount = Mathf.Round(IceMask.fillAmount * 100f) / 100f;
+			if (IceMask.fillAmount == 0)
+				IceMinus.interactable = false;
+			Player.GetComponent<CharacterShoot>().IceAmount -= 1;
+			IcePlus.interactable = true;
+
+			TotalUpgrades--;
+			AddMoney(50);
+		}
+	}
+
+	// Changes ice level of bullet
+	public void ChangeChargeShot(bool isIncreasing)
+	{
+		if (isIncreasing)
+		{
+			IceMask.fillAmount += 0.2f;
+			if (IceMask.fillAmount == 1)
+				IcePlus.interactable = false;
+			Player.GetComponent<CharacterShoot>().ChargeAmount += 1;
+			IceMinus.interactable = true;
+
+			TotalUpgrades++;
+			AddMoney(-250);
+		}
+		else
+		{
+			IceMask.fillAmount -= 0.2f;
+			IceMask.fillAmount = Mathf.Round(SSMask.fillAmount * 100f) / 100f;
+			if (IceMask.fillAmount == 0)
+				IceMinus.interactable = false;
+			Player.GetComponent<CharacterShoot>().ChargeAmount -= 1;
+			IcePlus.interactable = true;
+
+			TotalUpgrades--;
+			AddMoney(50);
 		}
 	}
 }
