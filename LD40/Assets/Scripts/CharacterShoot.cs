@@ -6,7 +6,9 @@ using UnityEngine.EventSystems;
 public class CharacterShoot : MonoBehaviour {
 
 	public GameObject BulletPrefab;
-
+	public float DamageMultiplier = 1;
+	public float RangeMultiplier = 1;
+	public float BulletScale = 1;
 	public float Cooldown = 0.50f;
 	float TimeLastShot = 0;
 
@@ -24,6 +26,10 @@ public class CharacterShoot : MonoBehaviour {
 			// Creates bullet and sets its position/rotation
 			var bullet = Instantiate(BulletPrefab);
 			bullet.transform.position = transform.position;
+			bullet.GetComponent<BulletScript>().StartPos = transform.position;
+			bullet.GetComponent<BulletScript>().Damage *= DamageMultiplier;
+			bullet.GetComponent<BulletScript>().Range *= RangeMultiplier;
+			bullet.GetComponent<BulletScript>().setScale(BulletScale);
 			TimeLastShot = Time.time;
 		}
 	}

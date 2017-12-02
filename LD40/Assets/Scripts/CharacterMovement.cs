@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour {
 
-	public float MovementSpeed = 5;
+	public float MovementSpeed = 5f;
 
 	// Use this for initialization
 	void Start () {
@@ -20,5 +20,11 @@ public class CharacterMovement : MonoBehaviour {
 		Camera.main.transform.position = new Vector3(Mathf.Lerp(Camera.main.transform.position.x, transform.position.x, Time.deltaTime * 5), Mathf.Lerp(Camera.main.transform.position.y, transform.position.y, Time.deltaTime * 5), Camera.main.transform.position.z);
 		Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - (Input.GetAxisRaw("Mouse ScrollWheel") * 25f), 5, 25);
 
+
+
+
+		// TODO: Remove this
+		if (Input.GetKey(KeyCode.Space))
+			GetComponent<Shop>().AddMoney(200);
 	}
 }

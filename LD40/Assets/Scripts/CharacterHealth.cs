@@ -18,7 +18,7 @@ public class CharacterHealth : MonoBehaviour {
 	{
 		Health -= value;
 
-		HealthMask.fillAmount = Health / 5;
+		HealthMask.fillAmount = (float)Health / 5f;
 
 		if (Health == 0)
 		{
